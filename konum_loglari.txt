@@ -1,0 +1,7 @@
+--- LoRa Oturum Baslangici ---
+[Giden]: merhaba
+[Giden]: merhaba
+[Gelen]: merhaba
+[Gelen]: merhaba
+[Gelen]: nasılsın
+[Giden]: 41.0082, 28.9784 [Harita: https://www.google.com/maps/search/?api=1&query=41.0082, 28.9784]

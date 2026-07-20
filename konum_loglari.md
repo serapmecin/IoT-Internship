@@ -1,4 +1,7 @@
 # LoRa Oturum Baslangici
 
 * **[Giden]:** merhaba  
-* **[Giden]:** nasılsın  
+* **[Giden]:** merhaba  
+* **[Gelen]:** merhaba  
+* **[Gelen]:** nasılsın  
+* **[Giden]:** iyiym sen nasılsın  

@@ -6,7 +6,7 @@ Konuşma kaydı bir Python script ile txt dosyasına loglanır.
 
 ## Proje Yapısı
 
-- `lora_chat.ino` — Her iki ESP32 kartına da yüklenen Arduino kodu. Serial
+- `sol1` — Her iki ESP32 kartına da yüklenen Arduino kodu. Serial
   Monitor'e yazılan metni otomatik olarak hex'e çevirip LoRa üzerinden gönderir,
   gelen hex veriyi çözüp okunabilir metin olarak gösterir.
 - `serial_logger.py` — Bilgisayarda çalışan, seçilen COM portunu dinleyip
@@ -20,7 +20,7 @@ Konuşma kaydı bir Python script ile txt dosyasına loglanır.
 
 ## Kurulum ve Çalıştırma
 
-1. `lora_chat.ino` dosyasını her iki ESP32 kartına da Arduino IDE ile yükleyin.
+1. `sol1` dosyasını her iki ESP32 kartına da Arduino IDE ile yükleyin.
 2. Her iki tarafta da Serial Monitor'den (115200 baud, Newline) şu komutları girin:
    ```
    AT+NWM=0

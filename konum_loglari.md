@@ -1,5 +1,5 @@
 # LoRa Oturum Baslangici
 
-* **[Giden]:** hjhkjfg  
-* **[Giden]:** slm  
-* **[Giden]:** selam  
+* **[Gelen]:** slm  
+* **[Gelen]:** selam  
+* **[Gelen]:** nasılsın  

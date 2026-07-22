@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canlı IoT Konum Takip Paneli</title>
+    <!-- Leaflet Harita Kütüphanesi -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        .card {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            min-width: 220px;
+        }
+        .card h3 { margin: 0 0 10px 0; color: #333; font-size: 16px; }
+        .card p { margin: 5px 0; color: #666; font-size: 14px; }
+        .status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #2ed573;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h3><span class="status"></span> LoRa Canlı Takip</h3>
+        <p><strong>Enlem:</strong> <span id="lat">Yükleniyor...</span></p>
+        <p><strong>Boylam:</strong> <span id="lng">Yükleniyor...</span></p>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Harita Başlatma (Ankara merkezli varsayılan görünüm)
+        const map = L.map('map').setView([39.92077, 32.85411], 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        let marker = null;
+
+        // GitHub Markdown dosyasından son koordinatı çeken fonksiyon
+        async function loadLastLocation() {
+            try {
+                // GitHub reponuzdaki konum_loglari.md dosyasını okuyoruz
+                const response = await fetch('https://raw.githubusercontent.com/serapmecin/IoT-Internship/main/konum_loglari.md');
+                const text = await response.text();
+
+                // Regex ile en son eklenen koordinatı buluyoruz
+                const matches = [...text.matchAll(/(\d{2}\.\d+),\s*(\d{2}\.\d+)/g)];
+                
+                if (matches.length > 0) {
+                    const lastMatch = matches[matches.length - 1];
+                    const lat = parseFloat(lastMatch[1]);
+                    const lng = parseFloat(lastMatch[2]);
+
+                    document.getElementById('lat').innerText = lat;
+                    document.getElementById('lng').innerText = lng;
+
+                    // Haritayı bu konuma taşı ve pini koy
+                    map.setView([lat, lng], 15);
+
+                    if (marker) {
+                        marker.setLatLng([lat, lng]);
+                    } else {
+                        marker = L.marker([lat, lng]).addTo(map);
+                    }
+                    marker.bindPopup(`<b>Son Bildirilen Konum</b><br>${lat}, ${lng}`).openPopup();
+                }
+            } catch (err) {
+                console.error("Konum okunamadı:", err);
+            }
+        }
+
+        // Sayfa açıldığında çalıştır ve her 10 saniyede bir otomatik yenile
+        loadLastLocation();
+        setInterval(loadLastLocation, 10000);
+    </script>
+</body>
+</html>

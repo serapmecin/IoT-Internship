@@ -1,4 +1,6 @@
 # LoRa Oturum Baslangici
 
-* **[Giden]:** jkjhjgh  
-* **[Giden]:** jjn  
+* **[Giden]:** merhaba  
+* **[Gelen]:** jkjhjgh  
+* **[Gelen]:** jjn  
+* **[Giden]:** 41.032038  

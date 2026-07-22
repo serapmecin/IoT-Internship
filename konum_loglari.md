@@ -1,4 +1,3 @@
 # LoRa Oturum Baslangici
 
-* **[Giden]:** merhaba  
-* **[Gelen]:** merhaba  
+* **[Giden]:** mrb  

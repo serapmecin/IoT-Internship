@@ -1,3 +1,6 @@
 # LoRa Oturum Baslangici
 
-* **[Gelen]:** gjukyk7  
+* **[Giden]:** merhaba  
+* **[Giden]:** hbgkygkgbl  
+* **[Giden]:** gjukyk7  
+* **[Giden]:** merhaba  

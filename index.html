@@ -18,7 +18,7 @@
             padding: 15px 20px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            min-width: 220px;
+            min-width: 240px;
         }
         .card h3 { margin: 0 0 10px 0; color: #333; font-size: 16px; }
         .card p { margin: 5px 0; color: #666; font-size: 14px; }
@@ -36,15 +36,16 @@
 
     <div class="card">
         <h3><span class="status"></span> LoRa Canlı Takip</h3>
-        <p><strong>Enlem:</strong> <span id="lat">Yükleniyor...</span></p>
-        <p><strong>Boylam:</strong> <span id="lng">Yükleniyor...</span></p>
+        <p><strong>Son Enlem:</strong> <span id="lat">Yükleniyor...</span></p>
+        <p><strong>Son Boylam:</strong> <span id="lng">Yükleniyor...</span></p>
+        <p><strong>Toplam Konum:</strong> <span id="count">0</span></p>
     </div>
 
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Harita Başlatma (Ankara merkezli varsayılan görünüm)
+        // Harita Başlatma
         const map = L.map('map').setView([39.92077, 32.85411], 6);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -52,44 +53,66 @@
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        let marker = null;
+        let markersGroup = L.layerGroup().addTo(map);
+        let pathLine = L.polyline([], {color: '#ff4757', weight: 4, opacity: 0.7}).addTo(map);
 
-        // GitHub Markdown dosyasından son koordinatı çeken fonksiyon
+        // GitHub log dosyasından TÜM koordinatları anlık çeken fonksiyon
         async function loadLastLocation() {
             try {
-                // GitHub reponuzdaki konum_loglari.md dosyasını okuyoruz
-                const response = await fetch('https://raw.githubusercontent.com/serapmecin/IoT-Internship/main/konum_loglari.md');
+                // cache: 'no-store' ve nocache parametresi ile GitHub CDN önbelleğini baypas ediyoruz
+                const response = await fetch('https://raw.githubusercontent.com/serapmecin/IoT-Internship/main/konum_loglari.md?nocache=' + new Date().getTime(), {
+                    cache: 'no-store'
+                });
                 const text = await response.text();
 
-                // Regex ile en son eklenen koordinatı buluyoruz
-                const matches = [...text.matchAll(/(\d{2}\.\d+),\s*(\d{2}\.\d+)/g)];
+                // Metin içindeki enlem,boylam çiftlerini ayıklayan Regex
+                const regex = /(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)/g;
+                let matches = [];
+                let match;
+
+                while ((match = regex.exec(text)) !== null) {
+                    const lat = parseFloat(match[1]);
+                    const lng = parseFloat(match[2]);
+                    
+                    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                        matches.push([lat, lng]);
+                    }
+                }
                 
                 if (matches.length > 0) {
-                    const lastMatch = matches[matches.length - 1];
-                    const lat = parseFloat(lastMatch[1]);
-                    const lng = parseFloat(lastMatch[2]);
+                    markersGroup.clearLayers(); // Eski pinleri temizle
+                    
+                    // Tüm geçmiş konumları pinle ve son pini vurgula
+                    matches.forEach((coord, index) => {
+                        const isLast = (index === matches.length - 1);
+                        const marker = L.marker(coord).addTo(markersGroup);
+                        
+                        if (isLast) {
+                            marker.bindPopup(`<b>Son Konum (${index + 1})</b><br>${coord[0]}, ${coord[1]}`).openPopup();
+                        } else {
+                            marker.bindPopup(`<b>Geçmiş Konum (${index + 1})</b><br>${coord[0]}, ${coord[1]}`);
+                        }
+                    });
 
-                    document.getElementById('lat').innerText = lat;
-                    document.getElementById('lng').innerText = lng;
+                    // Konumlar arasında kırmızı rota çizgisi çiz
+                    pathLine.setLatLngs(matches);
 
-                    // Haritayı bu konuma taşı ve pini koy
-                    map.setView([lat, lng], 15);
+                    const lastCoord = matches[matches.length - 1];
+                    document.getElementById('lat').innerText = lastCoord[0];
+                    document.getElementById('lng').innerText = lastCoord[1];
+                    document.getElementById('count').innerText = matches.length;
 
-                    if (marker) {
-                        marker.setLatLng([lat, lng]);
-                    } else {
-                        marker = L.marker([lat, lng]).addTo(map);
-                    }
-                    marker.bindPopup(`<b>Son Bildirilen Konum</b><br>${lat}, ${lng}`).openPopup();
+                    // Haritayı son eklenen konuma odakla
+                    map.setView(lastCoord, 14);
                 }
             } catch (err) {
                 console.error("Konum okunamadı:", err);
             }
         }
 
-        // Sayfa açıldığında çalıştır ve her 10 saniyede bir otomatik yenile
+        // Sayfa açıldığında çalıştır ve her 3 saniyede bir otomatik kontrol et
         loadLastLocation();
-        setInterval(loadLastLocation, 10000);
+        setInterval(loadLastLocation, 3000);
     </script>
 </body>
 </html>

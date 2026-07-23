@@ -21,3 +21,4 @@
 * **[Giden]:** HEDEF-22: ///güneş.çizgi.takip [41.246837,28.716888] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-22:///güneş.çizgi.takip[41.246837,28.716888])  
 * **[Giden]:** HEDEF-23: ///gece.yol.durak [41.185889,28.742981] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-23:///gece.yol.durak[41.185889,28.742981])  
 * **[Giden]:** HEDEF-24: ///kanyon.hedef.sevgiler [41.200356,28.651657] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-24:///kanyon.hedef.sevgiler[41.200356,28.651657])  
+* **[Giden]:** HEDEF-25: ///orman.fener.adım [41.282451,28.568573] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-25:///orman.fener.adım[41.282451,28.568573])  

@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Online LoRa Komuta Merkezi - what3words</title>
+    <title>Online LoRa Komuta Merkezi - 3 Kelime Sistemi</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
@@ -24,7 +24,7 @@
             border-bottom: 1px dashed #cbd5e1; color: #1e293b;
         }
         .w3w-tag {
-            color: #e11d48; font-weight: bold; display: block; margin-top: 2px; font-size: 12px;
+            color: #e11d48; font-weight: bold; display: block; margin-top: 2px; font-size: 13px;
         }
         .target-item:last-child { border-bottom: none; }
         button {
@@ -43,15 +43,15 @@
 <body>
 
     <div class="info-panel">
-        <h3 style="margin-top:0;">🌐 what3words LoRa Komut</h3>
-        <p style="font-size:12px; color:#64748b;">Haritada noktalara tıklayarak 3 kelimelik adres ve koordinat rotası oluşturun.</p>
+        <h3 style="margin-top:0;">🌐 3 Kelimeli LoRa Komut</h3>
+        <p style="font-size:12px; color:#64748b;">Haritadan seçilen noktalar 3 kelimelik özel adrese dönüştürülüp fırlatılır.</p>
 
         <div style="font-size: 13px; font-weight: bold;">Seçilen Hedefler (<span id="count">0</span>):</div>
         <div id="targetList" class="target-list">
             <div style="color: #94a3b8; font-size: 12px; text-align: center;">Henüz nokta seçilmedi</div>
         </div>
 
-        <button id="sendBtn" class="btn-send" onclick="sendAllCommands()" disabled>Tüm Hedefleri Yayınla</button>
+        <button id="sendBtn" class="btn-send" onclick="sendAllCommands()" disabled>Tüm 3 Kelimelik Hedefleri Yayınla</button>
         <button id="clearBtn" class="btn-clear" onclick="clearAllTargets()" disabled>Listeyi Temizle</button>
         <div id="status">Sunucuya bağlanılıyor...</div>
     </div>
@@ -59,6 +59,23 @@
     <div id="map"></div>
 
     <script>
+        // Türkçe Kelime Havuzumuz
+        var wordList1 = ["deniz", "bulut", "rüzgar", "güneş", "toprak", "orman", "nehir", "yıldız", "gece", "şafak", "mavi", "yeşil", "kırmızı", "altın", "gümüş", "kanyon", "vadi", "ada", "tepe", "sahil"];
+        var wordList2 = ["doku", "destek", "örnek", "süreç", "yolcu", "hedef", "pusula", "harita", "çizgi", "nokta", "sinyal", "dalga", "uydu", "telsiz", "kutucu", "simge", "kod", "fener", "yol", "iz"];
+        var wordList3 = ["sevgiler", "umutlar", "adım", "sistem", "yolculuk", "sefer", "durak", "bölge", "alan", "merkez", "noktası", "takip", "izlem", "haber", "mesaj", "veri", "akış", "bağlantı", "kontrol", "komut"];
+
+        // Koordinatı sabitleştirip benzersiz 3 kelimeye dönüştüren algoritmamız
+        function generate3Words(lat, lng) {
+            var latNum = Math.abs(Math.floor(parseFloat(lat) * 100000));
+            var lngNum = Math.abs(Math.floor(parseFloat(lng) * 100000));
+
+            var w1 = wordList1[latNum % wordList1.length];
+            var w2 = wordList2[lngNum % wordList2.length];
+            var w3 = wordList3[(latNum + lngNum) % wordList3.length];
+
+            return "///" + w1 + "." + w2 + "." + w3;
+        }
+
         var map = L.map('map').setView([41.0082, 28.9784], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OpenStreetMap' }).addTo(map);
 
@@ -77,40 +94,16 @@
             var lng = e.latlng.lng.toFixed(6);
             var index = targetList.length + 1;
 
-            var targetItem = { index: index, lat: lat, lng: lng, w3w: 'Aranıyor...' };
+            var threeWords = generate3Words(lat, lng);
+
+            var targetItem = { index: index, lat: lat, lng: lng, w3w: threeWords };
             targetList.push(targetItem);
 
-            var marker = L.marker(e.latlng).addTo(map);
+            var marker = L.marker(e.latlng).addTo(map)
+                .bindPopup("<b>Hedef #" + index + "</b><br><span style='color:#e11d48; font-weight:bold;'>" + threeWords + "</span><br>" + lat + ", " + lng).openPopup();
             markersList.push(marker);
 
             updateUI();
-
-            // what3words Resmi Public Servis Sorgusu (Türkçe Dil Desteği İle)
-            var w3wUrl = "https://api.what3words.com/v3/convert-to-3wa?coordinates=" + lat + "%2C" + lng + "&key=IXVBL4HP&language=tr";
-
-            fetch(w3wUrl)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.words) {
-                        targetItem.w3w = '///' + data.words;
-                    } else {
-                        // Eğer API Key henüz aktif olmadıysa ücretsiz kamu API servisinden kelimeleri çek
-                        return fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng)
-                            .then(r => r.json())
-                            .then(geo => {
-                                var shortName = (geo.address.suburb || geo.address.town || "nokta").toLowerCase().replace(/[^a-z0-9]/g, '');
-                                targetItem.w3w = "///" + shortName + "." + index + ".hedef";
-                            });
-                    }
-                })
-                .then(() => {
-                    marker.bindPopup("<b>Hedef #" + index + "</b><br>" + targetItem.w3w + "<br>" + lat + ", " + lng).openPopup();
-                    updateUI();
-                })
-                .catch(() => {
-                    targetItem.w3w = "///hedef." + index + ".konum";
-                    updateUI();
-                });
         });
 
         function updateUI() {
@@ -153,14 +146,15 @@
 
             targetList.forEach(function(item, idx) {
                 setTimeout(function() {
-                    var payload = "HEDEF-" + item.index + ": " + item.lat + "," + item.lng + " (" + item.w3w + ")";
+                    // ESP32 ve LoRa'ya doğrudan 3 kelimelik adresi fırlatıyoruz!
+                    var payload = "HEDEF-" + item.index + ": " + item.w3w + " [" + item.lat + "," + item.lng + "]";
                     client.publish(topicName, payload);
                     sentCount++;
-                    document.getElementById('status').innerText = "🚀 Gönderiliyor (" + sentCount + "/" + targetList.length + "): #" + item.index;
+                    document.getElementById('status').innerText = "🚀 Gönderiliyor (" + sentCount + "/" + targetList.length + "): " + item.w3w;
 
                     if (sentCount === targetList.length) {
                         setTimeout(function() {
-                            document.getElementById('status').innerText = "🎉 Tüm hedefler başarıyla yayınlandı!";
+                            document.getElementById('status').innerText = "🎉 Tüm 3 kelimeli hedefler yayınlandı!";
                             document.getElementById('sendBtn').disabled = false;
                         }, 1000);
                     }

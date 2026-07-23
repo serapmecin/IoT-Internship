@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Online LoRa Komuta Merkezi - what3words Entegreli</title>
+    <title>Online LoRa Komuta Merkezi - what3words</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
@@ -87,20 +87,22 @@
 
             updateUI();
 
-            // what3words Resmi API Çağrısı
-            fetch(`https://api.what3words.com/v3/convert-to-3wa?coordinates=${lat}%2C${lng}&language=tr&key=${w3wApiKey}`)
-                .then(res => res.json())
-                .then(data => {
+            // what3words API Çağrısı (Güvenli URL)
+            var apiUrl = "https://api.what3words.com/v3/convert-to-3wa?coordinates=" + lat + "%2C" + lng + "&key=" + w3wApiKey + "&language=tr";
+
+            fetch(apiUrl)
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
                     if (data && data.words) {
-                        targetItem.w3w = '///' + data.words;
+                        targetItem.w3w = "///" + data.words;
                     } else {
-                        targetItem.w3w = '///adres.bulunamadi';
+                        targetItem.w3w = "///" + lat + "." + lng;
                     }
-                    marker.bindPopup(`<b>Hedef #${index}</b><br>${targetItem.w3w}<br>${lat}, ${lng}`).openPopup();
+                    marker.bindPopup("<b>Hedef #" + index + "</b><br>" + targetItem.w3w + "<br>" + lat + ", " + lng).openPopup();
                     updateUI();
                 })
-                .catch(() => {
-                    targetItem.w3w = '///baglanti.hatasi';
+                .catch(function(err) {
+                    targetItem.w3w = "///" + lat + "." + lng;
                     updateUI();
                 });
         });
@@ -118,10 +120,10 @@
 
             var html = '';
             targetList.forEach(function(item) {
-                html += `<div class="target-item">
-                    📍 <b>#${item.index}:</b> ${item.lat}, ${item.lng}
-                    <span class="w3w-tag">${item.w3w}</span>
-                </div>`;
+                html += '<div class="target-item">' +
+                    '📍 <b>#' + item.index + ':</b> ' + item.lat + ', ' + item.lng +
+                    '<span class="w3w-tag">' + item.w3w + '</span>' +
+                '</div>';
             });
             listDiv.innerHTML = html;
 
@@ -145,10 +147,10 @@
 
             targetList.forEach(function(item, idx) {
                 setTimeout(function() {
-                    var payload = `HEDEF-${item.index}: ${item.lat},${item.lng} (${item.w3w})`;
+                    var payload = "HEDEF-" + item.index + ": " + item.lat + "," + item.lng + " (" + item.w3w + ")";
                     client.publish(topicName, payload);
                     sentCount++;
-                    document.getElementById('status').innerText = `🚀 Gönderiliyor (${sentCount}/${targetList.length}): #${item.index}`;
+                    document.getElementById('status').innerText = "🚀 Gönderiliyor (" + sentCount + "/" + targetList.length + "): #" + item.index;
 
                     if (sentCount === targetList.length) {
                         setTimeout(function() {
@@ -156,7 +158,7 @@
                             document.getElementById('sendBtn').disabled = false;
                         }, 1000);
                     }
-                }, idx * 2500);
+                }, idx * 3500); // Gecikmeyi 3.5 saniyeye çıkardık (ESP32 daha rahat işlesin diye)
             });
         }
     </script>

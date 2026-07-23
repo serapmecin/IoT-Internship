@@ -29,3 +29,4 @@
 * **[Giden]:** HEDEF-35: ///yeşil.telsiz.yolculuk [41.000112,28.663330] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-35:///yeşil.telsiz.yolculuk[41.000112,28.663330])  
 * **[Giden]:** HEDEF-36: ///gümüş.yol.izlem [41.035341,28.788986] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-36:///gümüş.yol.izlem[41.035341,28.788986])  
 * **[Giden]:** HEDEF-37: ///toprak.telsiz.bağlantı [41.108847,28.771133] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-37:///toprak.telsiz.bağlantı[41.108847,28.771133])  
+* **[Giden]:** HEDEF-38: ///ada.fener.mesaj [41.157978,28.866577] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-38:///ada.fener.mesaj[41.157978,28.866577])  

@@ -14,3 +14,4 @@
 * **[Giden]:** HEDEF-15: ///yeşil.dalga.adım [41.004516,29.070511] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-15:///yeşil.dalga.adım[41.004516,29.070511])  
 * **[Giden]:** HEDEF-16: ///şafak.dalga.sevgiler [40.979898,29.114113] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-16:///şafak.dalga.sevgiler[40.979898,29.114113])  
 * **[Giden]:** HEDEF-17: ///ada.kod.haber [41.036377,29.108963] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-17:///ada.kod.haber[41.036377,29.108963])  
+* **[Giden]:** HEDEF-18: ///yeşil.çizgi.komut [41.119711,28.506088] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-18:///yeşil.çizgi.komut[41.119711,28.506088])  

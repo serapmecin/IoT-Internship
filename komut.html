@@ -2,68 +2,135 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>LoRa Komuta Merkezi - Adım 1</title>
-    <!-- Leaflet Harita Kütüphanesi -->
+    <title>LoRa Komuta Merkezi - Adım 2</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; }
         #map { height: 100vh; width: 100vw; }
         
-        /* Sağ Üstteki Bilgi Paneli */
         .info-panel {
             position: absolute; top: 15px; right: 15px; z-index: 1000;
             background: rgba(255, 255, 255, 0.95); padding: 15px;
             border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 250px;
+            width: 260px;
         }
         .coord-box {
             background: #f1f5f9; padding: 8px; border-radius: 4px;
-            margin-top: 5px; font-weight: bold; color: #0f172a;
+            margin-top: 4px; font-weight: bold; color: #0f172a; font-family: monospace;
+        }
+        button {
+            width: 100%; padding: 10px; margin-top: 10px;
+            border: none; border-radius: 6px; font-weight: bold;
+            cursor: pointer; transition: 0.2s;
+        }
+        .btn-connect { background: #0284c7; color: white; }
+        .btn-connect:hover { background: #0369a1; }
+        .btn-send { background: #10b981; color: white; }
+        .btn-send:hover { background: #059669; }
+        .btn-send:disabled { background: #cbd5e1; cursor: not-allowed; }
+        
+        #logText {
+            font-size: 11px; color: #64748b; margin-top: 10px; font-family: monospace; word-break: break-all;
         }
     </style>
 </head>
 <body>
 
     <div class="info-panel">
-        <h3 style="margin-top:0;">🎯 Hedef Seçimi</h3>
-        <p style="font-size: 13px; color: #64748b;">Haritada bir noktaya tıklayın:</p>
+        <h3 style="margin-top:0;">🎯 Hedef Gönderimi</h3>
+        
+        <!-- USB Bağlantı Butonu -->
+        <button id="connectBtn" class="btn-connect" onclick="connectSerial()">1. Karta Bağlan (USB)</button>
+        
+        <hr style="margin: 12px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
         <div>Enlem (Lat):</div>
         <div id="latVal" class="coord-box">--.----</div>
         <br>
         <div>Boylam (Lng):</div>
         <div id="lngVal" class="coord-box">--.----</div>
+
+        <!-- Gönder Butonu -->
+        <button id="sendBtn" class="btn-send" onclick="sendData()" disabled>2. Koordinatı Gönder</button>
+        
+        <div id="logText">Durum: Bekleniyor...</div>
     </div>
 
     <div id="map"></div>
 
     <script>
-        // Haritayı başlat (İstanbul merkezli)
         var map = L.map('map').setView([41.0082, 28.9784], 13);
 
-        // Harita Katmanı (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'OpenStreetMap'
         }).addTo(map);
 
         var targetMarker = null;
+        var selectedLat = null;
+        var selectedLng = null;
+        var port = null;
+        var writer = null;
 
-        // HARİTAYA TIKLAMA OLAYI
+        // Harita Tıklama
         map.on('click', function(e) {
-            var lat = e.latlng.lat;
-            var lng = e.latlng.lng;
+            selectedLat = e.latlng.lat;
+            selectedLng = e.latlng.lng;
 
-            // Paneldeki yazıları güncelle
-            document.getElementById('latVal').innerText = lat.toFixed(6);
-            document.getElementById('lngVal').innerText = lng.toFixed(6);
+            document.getElementById('latVal').innerText = selectedLat.toFixed(6);
+            document.getElementById('lngVal').innerText = selectedLng.toFixed(6);
 
-            // Eğer daha önce pin koyulduysa yerini değiştir, yoksa yeni pin oluştur
             if (targetMarker) {
                 targetMarker.setLatLng(e.latlng);
             } else {
                 targetMarker = L.marker(e.latlng).addTo(map);
             }
+
+            checkSendButtonStatus();
         });
+
+        // 1. Seri Port (USB) Bağlantı Fonksiyonu
+        async function connectSerial() {
+            if ("serial" in navigator) {
+                try {
+                    port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 9600 });
+                    writer = port.writable.getWriter();
+
+                    document.getElementById('connectBtn').innerText = "✅ Karta Bağlandı";
+                    document.getElementById('connectBtn').style.background = "#059669";
+                    document.getElementById('logText').innerText = "Durum: USB Bağlantısı Başarılı!";
+                    
+                    checkSendButtonStatus();
+                } catch (err) {
+                    document.getElementById('logText').innerText = "Hata: " + err;
+                }
+            } else {
+                alert("Tarayıcınız Web Serial desteklemiyor. Lütfen Chrome veya Edge kullanın.");
+            }
+        }
+
+        function checkSendButtonStatus() {
+            if (writer && selectedLat && selectedLng) {
+                document.getElementById('sendBtn').disabled = false;
+            }
+        }
+
+        // 2. Veri Gönderme Fonksiyonu
+        async function sendData() {
+            if (!writer || !selectedLat || !selectedLng) return;
+
+            // Kartın kolayca okuyabileceği format: LAT,LNG\n
+            var message = selectedLat.toFixed(6) + "," + selectedLng.toFixed(6) + "\n";
+            var encoder = new TextEncoder();
+
+            try {
+                await writer.write(encoder.encode(message));
+                document.getElementById('logText').innerText = "Gönderildi: " + message;
+            } catch (err) {
+                document.getElementById('logText').innerText = "Gönderim Hatası: " + err;
+            }
+        }
     </script>
 </body>
 </html>

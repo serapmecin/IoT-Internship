@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>LoRa Komuta Merkezi - Adım 1</title>
+    <!-- Leaflet Harita Kütüphanesi -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        
+        /* Sağ Üstteki Bilgi Paneli */
+        .info-panel {
+            position: absolute; top: 15px; right: 15px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95); padding: 15px;
+            border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 250px;
+        }
+        .coord-box {
+            background: #f1f5f9; padding: 8px; border-radius: 4px;
+            margin-top: 5px; font-weight: bold; color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="info-panel">
+        <h3 style="margin-top:0;">🎯 Hedef Seçimi</h3>
+        <p style="font-size: 13px; color: #64748b;">Haritada bir noktaya tıklayın:</p>
+        <div>Enlem (Lat):</div>
+        <div id="latVal" class="coord-box">--.----</div>
+        <br>
+        <div>Boylam (Lng):</div>
+        <div id="lngVal" class="coord-box">--.----</div>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+        // Haritayı başlat (İstanbul merkezli)
+        var map = L.map('map').setView([41.0082, 28.9784], 13);
+
+        // Harita Katmanı (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'OpenStreetMap'
+        }).addTo(map);
+
+        var targetMarker = null;
+
+        // HARİTAYA TIKLAMA OLAYI
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            // Paneldeki yazıları güncelle
+            document.getElementById('latVal').innerText = lat.toFixed(6);
+            document.getElementById('lngVal').innerText = lng.toFixed(6);
+
+            // Eğer daha önce pin koyulduysa yerini değiştir, yoksa yeni pin oluştur
+            if (targetMarker) {
+                targetMarker.setLatLng(e.latlng);
+            } else {
+                targetMarker = L.marker(e.latlng).addTo(map);
+            }
+        });
+    </script>
+</body>
+</html>

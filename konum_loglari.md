@@ -8,3 +8,4 @@
 * **[Giden]:** HEDEF-3: 41.025974,28.879272 | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:41.025974,28.879272)  
 * **[Giden]:** HEDEF-4: 41.066904,28.875496 | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-4:41.066904,28.875496)  
 * **[Giden]:** HEDEF-1: 41.135192,28.806141 | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:41.135192,28.806141)  
+* **[Giden]:** HEDEF-2: 41.092751,28.817806 | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:41.092751,28.817806)  

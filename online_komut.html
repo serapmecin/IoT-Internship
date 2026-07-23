@@ -5,6 +5,8 @@
     <title>Online LoRa Komuta Merkezi</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- MQTT Kütüphanesi (İnternet Üzerinden Anlık Veri İletimi) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; }
         #map { height: 100vh; width: 100vw; }
@@ -25,7 +27,7 @@
         }
         button:hover { background: #059669; }
         button:disabled { background: #cbd5e1; cursor: not-allowed; }
-        #status { font-size: 11px; color: #64748b; margin-top: 8px; font-family: monospace; }
+        #status { font-size: 11px; color: #0284c7; margin-top: 8px; font-family: monospace; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -41,7 +43,7 @@
         <div id="lngVal" class="coord-box">--.----</div>
 
         <button id="sendBtn" onclick="sendOnlineCommand()" disabled>Hedef Komutunu Yayınla</button>
-        <div id="status">Durum: Haritadan nokta seçin...</div>
+        <div id="status">Sunucuya bağlanılıyor...</div>
     </div>
 
     <div id="map"></div>
@@ -53,6 +55,14 @@
         var targetMarker = null;
         var selectedLat = null;
         var selectedLng = null;
+
+        // MQTT Sunucusuna Bağlantı (Public Broker)
+        var client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
+        var topicName = "serap_lora_internship/target_command";
+
+        client.on('connect', function () {
+            document.getElementById('status').innerText = "✅ Bulut Sunucu Bağlantısı Hazır";
+        });
 
         map.on('click', function(e) {
             selectedLat = e.latlng.lat;
@@ -73,14 +83,12 @@
         function sendOnlineCommand() {
             if (!selectedLat || !selectedLng) return;
             
-            var payload = {
-                lat: selectedLat.toFixed(6),
-                lng: selectedLng.toFixed(6),
-                time: new Date().toISOString()
-            };
+            var payload = selectedLat.toFixed(6) + "," + selectedLng.toFixed(6);
 
-            document.getElementById('status').innerText = "Komut Hazırlandı: " + payload.lat + ", " + payload.lng;
-            console.log("Gönderilecek Veri:", payload);
+            // MQTT üzerinden buluta yayınlama
+            client.publish(topicName, payload, function () {
+                document.getElementById('status').innerText = "🚀 Yayınlandı: " + payload;
+            });
         }
     </script>
 </body>

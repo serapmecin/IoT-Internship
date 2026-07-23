@@ -1,16 +1,3 @@
 # LoRa Oturum Baslangici
 
-* **[Giden]:** HEDEF-1: 41.068937,28.893325 (///41.068937.28.893325) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:41.068937,28.893325(///41.068937.28.893325))  
-* **[Giden]:** HEDEF-2: 41.028526,28.854883 (///41.028526.28.854883) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:41.028526,28.854883(///41.028526.28.854883))  
-* **[Giden]:** HEDEF-3: 41.165119,29.029911 (///41.165119.29.029911) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:41.165119,29.029911(///41.165119.29.029911))  
-* **[Giden]:** HEDEF-4: 41.076106,29.160340 (///41.076106.29.160340) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-4:41.076106,29.160340(///41.076106.29.160340))  
-* **[Giden]:** HEDEF-1: 41.042298,28.799973 (///halkalmerkezmahallesi.1.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:41.042298,28.799973(///halkalmerkezmahallesi.1.hedef))  
-* **[Giden]:** HEDEF-2: 41.068199,28.906059 (///emsipaamahallesi.2.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:41.068199,28.906059(///emsipaamahallesi.2.hedef))  
-* **[Giden]:** HEDEF-3: 41.020273,28.910866 (///maltepemahallesi.3.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:41.020273,28.910866(///maltepemahallesi.3.hedef))  
-* **[Giden]:** HEDEF-1: ///rüzgar.simge.bağlantı [41.138222,28.784157] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///rüzgar.simge.bağlantı[41.138222,28.784157])  
-* **[Giden]:** HEDEF-2: ///kanyon.telsiz.alan [41.031555,28.855536] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:///kanyon.telsiz.alan[41.031555,28.855536])  
-* **[Giden]:** HEDEF-3: ///mavi.simge.sefer [41.182702,29.006559] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:///mavi.simge.sefer[41.182702,29.006559])  
-* **[Giden]:** HEDEF-1: ///toprak.destek.sefer [41.884245,27.531417] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///toprak.destek.sefer[41.884245,27.531417])  
-* **[Giden]:** HEDEF-2: ///rüzgar.telsiz.veri [44.055426,27.454533] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:///rüzgar.telsiz.veri[44.055426,27.454533])  
-* **[Giden]:** HEDEF-3: ///gümüş.nokta.sistem [40.678341,30.134498] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:///gümüş.nokta.sistem[40.678341,30.134498])  
-* **[Giden]:** HEDEF-1: ///yeşil.simge.durak [41.051913,28.996353] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///yeşil.simge.durak[41.051913,28.996353])  
+* **[Giden]:** HEDEF-4: ///bulut.fener.kontrol [41.026017,29.077377] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-4:///bulut.fener.kontrol[41.026017,29.077377])  

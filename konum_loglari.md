@@ -13,3 +13,4 @@
 * **[Giden]:** HEDEF-1: ///toprak.destek.sefer [41.884245,27.531417] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///toprak.destek.sefer[41.884245,27.531417])  
 * **[Giden]:** HEDEF-2: ///rüzgar.telsiz.veri [44.055426,27.454533] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:///rüzgar.telsiz.veri[44.055426,27.454533])  
 * **[Giden]:** HEDEF-3: ///gümüş.nokta.sistem [40.678341,30.134498] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:///gümüş.nokta.sistem[40.678341,30.134498])  
+* **[Giden]:** HEDEF-1: ///yeşil.simge.durak [41.051913,28.996353] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///yeşil.simge.durak[41.051913,28.996353])  

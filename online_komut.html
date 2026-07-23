@@ -2,10 +2,9 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Online LoRa Komuta Merkezi</title>
+    <title>Online LoRa Komuta Merkezi - Çoklu Hedef</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- MQTT Kütüphanesi (İnternet Üzerinden Anlık Veri İletimi) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; }
@@ -14,18 +13,26 @@
             position: absolute; top: 15px; right: 15px; z-index: 1000;
             background: rgba(255, 255, 255, 0.95); padding: 15px;
             border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 260px;
+            width: 280px; max-height: 85vh; overflow-y: auto;
         }
-        .coord-box {
-            background: #f1f5f9; padding: 8px; border-radius: 4px;
-            margin-top: 4px; font-weight: bold; color: #0f172a; font-family: monospace;
+        .target-list {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;
+            padding: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto;
         }
+        .target-item {
+            font-family: monospace; font-size: 12px; padding: 4px 0;
+            border-bottom: 1px dashed #cbd5e1; color: #1e293b;
+        }
+        .target-item:last-child { border-bottom: none; }
         button {
-            width: 100%; padding: 10px; margin-top: 10px;
+            width: 100%; padding: 10px; margin-top: 6px;
             border: none; border-radius: 6px; font-weight: bold;
-            cursor: pointer; transition: 0.2s; background: #10b981; color: white;
+            cursor: pointer; transition: 0.2s; color: white;
         }
-        button:hover { background: #059669; }
+        .btn-send { background: #10b981; }
+        .btn-send:hover { background: #059669; }
+        .btn-clear { background: #ef4444; }
+        .btn-clear:hover { background: #dc2626; }
         button:disabled { background: #cbd5e1; cursor: not-allowed; }
         #status { font-size: 11px; color: #0284c7; margin-top: 8px; font-family: monospace; font-weight: bold; }
     </style>
@@ -33,30 +40,28 @@
 <body>
 
     <div class="info-panel">
-        <h3 style="margin-top:0;">🌐 Online Hedef Gönderimi</h3>
-        <p style="font-size:12px; color:#64748b;">Herhangi bir cihazdan haritaya tıklayıp komut gönderebilirsiniz.</p>
+        <h3 style="margin-top:0;">🌐 Çoklu Hedef Gönderimi</h3>
+        <p style="font-size:12px; color:#64748b;">Haritada birden fazla noktaya tıklayarak rota oluşturun.</p>
 
-        <div>Enlem (Lat):</div>
-        <div id="latVal" class="coord-box">--.----</div>
-        <br>
-        <div>Boylam (Lng):</div>
-        <div id="lngVal" class="coord-box">--.----</div>
+        <div style="font-size: 13px; font-weight: bold;">Seçilen Hedefler (<span id="count">0</span>):</div>
+        <div id="targetList" class="target-list">
+            <div style="color: #94a3b8; font-size: 12px; text-align: center;">Henüz nokta seçilmedi</div>
+        </div>
 
-        <button id="sendBtn" onclick="sendOnlineCommand()" disabled>Hedef Komutunu Yayınla</button>
+        <button id="sendBtn" class="btn-send" onclick="sendAllCommands()" disabled>Tüm Hedefleri Yayınla</button>
+        <button id="clearBtn" class="btn-clear" onclick="clearAllTargets()" disabled>Listeyi Temizle</button>
         <div id="status">Sunucuya bağlanılıyor...</div>
     </div>
 
     <div id="map"></div>
 
     <script>
-        var map = L.map('map').setView([41.0082, 28.9784], 13);
+        var map = L.map('map').setView([41.0082, 28.9784], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OpenStreetMap' }).addTo(map);
 
-        var targetMarker = null;
-        var selectedLat = null;
-        var selectedLng = null;
+        var targetList = [];
+        var markersList = [];
 
-        // MQTT Sunucusuna Bağlantı (Public Broker)
         var client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt');
         var topicName = "serap_lora_internship/target_command";
 
@@ -65,29 +70,70 @@
         });
 
         map.on('click', function(e) {
-            selectedLat = e.latlng.lat;
-            selectedLng = e.latlng.lng;
+            var lat = e.latlng.lat.toFixed(6);
+            var lng = e.latlng.lng.toFixed(6);
+            var index = targetList.length + 1;
 
-            document.getElementById('latVal').innerText = selectedLat.toFixed(6);
-            document.getElementById('lngVal').innerText = selectedLng.toFixed(6);
+            targetList.push({ index: index, lat: lat, lng: lng });
 
-            if (targetMarker) {
-                targetMarker.setLatLng(e.latlng);
-            } else {
-                targetMarker = L.marker(e.latlng).addTo(map);
-            }
+            // Haritaya marker ekle
+            var marker = L.marker(e.latlng).addTo(map)
+                .bindPopup("<b>Hedef #" + index + "</b><br>" + lat + ", " + lng).openPopup();
+            markersList.push(marker);
 
-            document.getElementById('sendBtn').disabled = false;
+            updateUI();
         });
 
-        function sendOnlineCommand() {
-            if (!selectedLat || !selectedLng) return;
-            
-            var payload = selectedLat.toFixed(6) + "," + selectedLng.toFixed(6);
+        function updateUI() {
+            var listDiv = document.getElementById('targetList');
+            document.getElementById('count').innerText = targetList.length;
 
-            // MQTT üzerinden buluta yayınlama
-            client.publish(topicName, payload, function () {
-                document.getElementById('status').innerText = "🚀 Yayınlandı: " + payload;
+            if (targetList.length === 0) {
+                listDiv.innerHTML = '<div style="color: #94a3b8; font-size: 12px; text-align: center;">Henüz nokta seçilmedi</div>';
+                document.getElementById('sendBtn').disabled = true;
+                document.getElementById('clearBtn').disabled = true;
+                return;
+            }
+
+            var html = '';
+            targetList.forEach(function(item) {
+                html += '<div class="target-item">📍 <b>#' + item.index + ':</b> ' + item.lat + ', ' + item.lng + '</div>';
+            });
+            listDiv.innerHTML = html;
+
+            document.getElementById('sendBtn').disabled = false;
+            document.getElementById('clearBtn').disabled = false;
+        }
+
+        function clearAllTargets() {
+            targetList = [];
+            markersList.forEach(function(m) { map.removeLayer(m); });
+            markersList = [];
+            updateUI();
+            document.getElementById('status').innerText = "List ve pinler temizlendi.";
+        }
+
+        function sendAllCommands() {
+            if (targetList.length === 0) return;
+
+            document.getElementById('sendBtn').disabled = true;
+            var sentCount = 0;
+
+            targetList.forEach(function(item, idx) {
+                // Her hedef arasına 2.5 saniye gecikme koyarak sırayla fırlatıyoruz
+                setTimeout(function() {
+                    var payload = "HEDEF-" + item.index + ": " + item.lat + "," + item.lng;
+                    client.publish(topicName, payload);
+                    sentCount++;
+                    document.getElementById('status').innerText = "🚀 Gönderiliyor (" + sentCount + "/" + targetList.length + "): #" + item.index;
+
+                    if (sentCount === targetList.length) {
+                        setTimeout(function() {
+                            document.getElementById('status').innerText = "🎉 Tüm hedefler başarıyla yayınlandı!";
+                            document.getElementById('sendBtn').disabled = false;
+                        }, 1000);
+                    }
+                }, idx * 2500);
             });
         }
     </script>

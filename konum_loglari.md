@@ -25,3 +25,4 @@
 * **[Giden]:** HEDEF-26: ///gece.örnek.noktası [41.223085,28.751221] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-26:///gece.örnek.noktası[41.223085,28.751221])  
 * **[Giden]:** HEDEF-32: ///gece.harita.veri [41.101086,28.661270] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-32:///gece.harita.veri[41.101086,28.661270])  
 * **[Giden]:** HEDEF-33: ///sahil.iz.kontrol [41.086597,28.628998] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-33:///sahil.iz.kontrol[41.086597,28.628998])  
+* **[Giden]:** HEDEF-34: ///gece.telsiz.umutlar [41.039484,28.688736] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-34:///gece.telsiz.umutlar[41.039484,28.688736])  

@@ -19,3 +19,4 @@
 * **[Giden]:** HEDEF-20: ///gümüş.simge.merkez [41.105743,28.430557] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-20:///gümüş.simge.merkez[41.105743,28.430557])  
 * **[Giden]:** HEDEF-21: ///deniz.çizgi.alan [41.180204,28.547287] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-21:///deniz.çizgi.alan[41.180204,28.547287])  
 * **[Giden]:** HEDEF-22: ///güneş.çizgi.takip [41.246837,28.716888] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-22:///güneş.çizgi.takip[41.246837,28.716888])  
+* **[Giden]:** HEDEF-23: ///gece.yol.durak [41.185889,28.742981] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-23:///gece.yol.durak[41.185889,28.742981])  

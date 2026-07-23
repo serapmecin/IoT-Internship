@@ -8,3 +8,4 @@
 * **[Giden]:** HEDEF-2: 41.068199,28.906059 (///emsipaamahallesi.2.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:41.068199,28.906059(///emsipaamahallesi.2.hedef))  
 * **[Giden]:** HEDEF-3: 41.020273,28.910866 (///maltepemahallesi.3.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:41.020273,28.910866(///maltepemahallesi.3.hedef))  
 * **[Giden]:** HEDEF-1: ///rüzgar.simge.bağlantı [41.138222,28.784157] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///rüzgar.simge.bağlantı[41.138222,28.784157])  
+* **[Giden]:** HEDEF-2: ///kanyon.telsiz.alan [41.031555,28.855536] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:///kanyon.telsiz.alan[41.031555,28.855536])  

@@ -6,3 +6,4 @@
 * **[Giden]:** HEDEF-4: 41.076106,29.160340 (///41.076106.29.160340) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-4:41.076106,29.160340(///41.076106.29.160340))  
 * **[Giden]:** HEDEF-1: 41.042298,28.799973 (///halkalmerkezmahallesi.1.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:41.042298,28.799973(///halkalmerkezmahallesi.1.hedef))  
 * **[Giden]:** HEDEF-2: 41.068199,28.906059 (///emsipaamahallesi.2.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:41.068199,28.906059(///emsipaamahallesi.2.hedef))  
+* **[Giden]:** HEDEF-3: 41.020273,28.910866 (///maltepemahallesi.3.hedef) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:41.020273,28.910866(///maltepemahallesi.3.hedef))  

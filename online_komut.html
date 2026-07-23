@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Online LoRa Komuta Merkezi</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        .info-panel {
+            position: absolute; top: 15px; right: 15px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95); padding: 15px;
+            border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 260px;
+        }
+        .coord-box {
+            background: #f1f5f9; padding: 8px; border-radius: 4px;
+            margin-top: 4px; font-weight: bold; color: #0f172a; font-family: monospace;
+        }
+        button {
+            width: 100%; padding: 10px; margin-top: 10px;
+            border: none; border-radius: 6px; font-weight: bold;
+            cursor: pointer; transition: 0.2s; background: #10b981; color: white;
+        }
+        button:hover { background: #059669; }
+        button:disabled { background: #cbd5e1; cursor: not-allowed; }
+        #status { font-size: 11px; color: #64748b; margin-top: 8px; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div class="info-panel">
+        <h3 style="margin-top:0;">🌐 Online Hedef Gönderimi</h3>
+        <p style="font-size:12px; color:#64748b;">Herhangi bir cihazdan haritaya tıklayıp komut gönderebilirsiniz.</p>
+
+        <div>Enlem (Lat):</div>
+        <div id="latVal" class="coord-box">--.----</div>
+        <br>
+        <div>Boylam (Lng):</div>
+        <div id="lngVal" class="coord-box">--.----</div>
+
+        <button id="sendBtn" onclick="sendOnlineCommand()" disabled>Hedef Komutunu Yayınla</button>
+        <div id="status">Durum: Haritadan nokta seçin...</div>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([41.0082, 28.9784], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OpenStreetMap' }).addTo(map);
+
+        var targetMarker = null;
+        var selectedLat = null;
+        var selectedLng = null;
+
+        map.on('click', function(e) {
+            selectedLat = e.latlng.lat;
+            selectedLng = e.latlng.lng;
+
+            document.getElementById('latVal').innerText = selectedLat.toFixed(6);
+            document.getElementById('lngVal').innerText = selectedLng.toFixed(6);
+
+            if (targetMarker) {
+                targetMarker.setLatLng(e.latlng);
+            } else {
+                targetMarker = L.marker(e.latlng).addTo(map);
+            }
+
+            document.getElementById('sendBtn').disabled = false;
+        });
+
+        function sendOnlineCommand() {
+            if (!selectedLat || !selectedLng) return;
+            
+            var payload = {
+                lat: selectedLat.toFixed(6),
+                lng: selectedLng.toFixed(6),
+                time: new Date().toISOString()
+            };
+
+            document.getElementById('status').innerText = "Komut Hazırlandı: " + payload.lat + ", " + payload.lng;
+            console.log("Gönderilecek Veri:", payload);
+        }
+    </script>
+</body>
+</html>

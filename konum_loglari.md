@@ -10,3 +10,4 @@
 * **[Giden]:** HEDEF-1: ///rüzgar.simge.bağlantı [41.138222,28.784157] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///rüzgar.simge.bağlantı[41.138222,28.784157])  
 * **[Giden]:** HEDEF-2: ///kanyon.telsiz.alan [41.031555,28.855536] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:///kanyon.telsiz.alan[41.031555,28.855536])  
 * **[Giden]:** HEDEF-3: ///mavi.simge.sefer [41.182702,29.006559] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-3:///mavi.simge.sefer[41.182702,29.006559])  
+* **[Giden]:** HEDEF-1: ///toprak.destek.sefer [41.884245,27.531417] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:///toprak.destek.sefer[41.884245,27.531417])  

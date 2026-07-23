@@ -31,3 +31,4 @@
 * **[Giden]:** HEDEF-37: ///toprak.telsiz.bağlantı [41.108847,28.771133] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-37:///toprak.telsiz.bağlantı[41.108847,28.771133])  
 * **[Giden]:** HEDEF-38: ///ada.fener.mesaj [41.157978,28.866577] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-38:///ada.fener.mesaj[41.157978,28.866577])  
 * **[Giden]:** HEDEF-39: ///yıldız.örnek.merkez [41.194673,28.962021] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-39:///yıldız.örnek.merkez[41.194673,28.962021])  
+* **[Giden]:** HEDEF-40: ///rüzgar.kutucu.akış [41.150223,28.945541] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-40:///rüzgar.kutucu.akış[41.150223,28.945541])  

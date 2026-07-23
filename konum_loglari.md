@@ -3,3 +3,4 @@
 * **[Giden]:** klkdjdf  
 * **[Giden]:** snkjsjk  
 * **[Gelen]:** merhaba  
+* **[Giden]:** nasılsın  

@@ -27,3 +27,4 @@
 * **[Giden]:** HEDEF-33: ///sahil.iz.kontrol [41.086597,28.628998] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-33:///sahil.iz.kontrol[41.086597,28.628998])  
 * **[Giden]:** HEDEF-34: ///gece.telsiz.umutlar [41.039484,28.688736] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-34:///gece.telsiz.umutlar[41.039484,28.688736])  
 * **[Giden]:** HEDEF-35: ///yeşil.telsiz.yolculuk [41.000112,28.663330] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-35:///yeşil.telsiz.yolculuk[41.000112,28.663330])  
+* **[Giden]:** HEDEF-36: ///gümüş.yol.izlem [41.035341,28.788986] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-36:///gümüş.yol.izlem[41.035341,28.788986])  

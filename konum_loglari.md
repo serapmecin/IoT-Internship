@@ -17,3 +17,4 @@
 * **[Giden]:** HEDEF-18: ///yeşil.çizgi.komut [41.119711,28.506088] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-18:///yeşil.çizgi.komut[41.119711,28.506088])  
 * **[Giden]:** HEDEF-19: ///gümüş.iz.haber [41.120746,28.603592] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-19:///gümüş.iz.haber[41.120746,28.603592])  
 * **[Giden]:** HEDEF-20: ///gümüş.simge.merkez [41.105743,28.430557] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-20:///gümüş.simge.merkez[41.105743,28.430557])  
+* **[Giden]:** HEDEF-21: ///deniz.çizgi.alan [41.180204,28.547287] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-21:///deniz.çizgi.alan[41.180204,28.547287])  

@@ -12,3 +12,4 @@
 * **[Giden]:** HEDEF-13: ///güneş.nokta.izlem [41.032233,28.865891] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-13:///güneş.nokta.izlem[41.032233,28.865891])  
 * **[Giden]:** HEDEF-14: ///kanyon.pusula.umutlar [41.016952,28.933868] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-14:///kanyon.pusula.umutlar[41.016952,28.933868])  
 * **[Giden]:** HEDEF-15: ///yeşil.dalga.adım [41.004516,29.070511] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-15:///yeşil.dalga.adım[41.004516,29.070511])  
+* **[Giden]:** HEDEF-16: ///şafak.dalga.sevgiler [40.979898,29.114113] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-16:///şafak.dalga.sevgiler[40.979898,29.114113])  

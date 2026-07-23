@@ -24,3 +24,4 @@
 * **[Giden]:** HEDEF-25: ///orman.fener.adım [41.282451,28.568573] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-25:///orman.fener.adım[41.282451,28.568573])  
 * **[Giden]:** HEDEF-26: ///gece.örnek.noktası [41.223085,28.751221] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-26:///gece.örnek.noktası[41.223085,28.751221])  
 * **[Giden]:** HEDEF-32: ///gece.harita.veri [41.101086,28.661270] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-32:///gece.harita.veri[41.101086,28.661270])  
+* **[Giden]:** HEDEF-33: ///sahil.iz.kontrol [41.086597,28.628998] | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-33:///sahil.iz.kontrol[41.086597,28.628998])  

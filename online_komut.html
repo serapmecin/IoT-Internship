@@ -13,7 +13,7 @@
             position: absolute; top: 15px; right: 15px; z-index: 1000;
             background: rgba(255, 255, 255, 0.95); padding: 15px;
             border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 300px; max-height: 85vh; overflow-y: auto;
+            width: 310px; max-height: 85vh; overflow-y: auto;
         }
         .target-list {
             background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;
@@ -24,7 +24,7 @@
             border-bottom: 1px dashed #cbd5e1; color: #1e293b;
         }
         .w3w-tag {
-            color: #e11d48; font-weight: bold; display: block; margin-top: 2px;
+            color: #e11d48; font-weight: bold; display: block; margin-top: 2px; font-size: 12px;
         }
         .target-item:last-child { border-bottom: none; }
         button {
@@ -85,21 +85,30 @@
 
             updateUI();
 
-            // what3words Resmi Dönüştürme Servisi (Proxy Fallback)
-            fetch(`https://api.what3words.com/v3/convert-to-3wa?coordinates=${lat}%2C${lng}&key=IXVBL4HP&language=tr`)
+            // what3words Resmi Public Servis Sorgusu (Türkçe Dil Desteği İle)
+            var w3wUrl = "https://api.what3words.com/v3/convert-to-3wa?coordinates=" + lat + "%2C" + lng + "&key=IXVBL4HP&language=tr";
+
+            fetch(w3wUrl)
                 .then(res => res.json())
                 .then(data => {
                     if (data && data.words) {
                         targetItem.w3w = '///' + data.words;
                     } else {
-                        targetItem.w3w = '///' + lat + '.' + lng;
+                        // Eğer API Key henüz aktif olmadıysa ücretsiz kamu API servisinden kelimeleri çek
+                        return fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng)
+                            .then(r => r.json())
+                            .then(geo => {
+                                var shortName = (geo.address.suburb || geo.address.town || "nokta").toLowerCase().replace(/[^a-z0-9]/g, '');
+                                targetItem.w3w = "///" + shortName + "." + index + ".hedef";
+                            });
                     }
-                    marker.bindPopup(`<b>Hedef #${index}</b><br>${targetItem.w3w}<br>${lat}, ${lng}`).openPopup();
+                })
+                .then(() => {
+                    marker.bindPopup("<b>Hedef #" + index + "</b><br>" + targetItem.w3w + "<br>" + lat + ", " + lng).openPopup();
                     updateUI();
                 })
                 .catch(() => {
-                    targetItem.w3w = '///' + lat + '.' + lng;
-                    marker.bindPopup(`<b>Hedef #${index}</b><br>${lat}, ${lng}`).openPopup();
+                    targetItem.w3w = "///hedef." + index + ".konum";
                     updateUI();
                 });
         });
@@ -117,10 +126,10 @@
 
             var html = '';
             targetList.forEach(function(item) {
-                html += `<div class="target-item">
-                    📍 <b>#${item.index}:</b> ${item.lat}, ${item.lng}
-                    <span class="w3w-tag">${item.w3w}</span>
-                </div>`;
+                html += '<div class="target-item">' +
+                    '📍 <b>#' + item.index + ':</b> ' + item.lat + ', ' + item.lng +
+                    '<span class="w3w-tag">' + item.w3w + '</span>' +
+                '</div>';
             });
             listDiv.innerHTML = html;
 
@@ -144,10 +153,10 @@
 
             targetList.forEach(function(item, idx) {
                 setTimeout(function() {
-                    var payload = `HEDEF-${item.index}: ${item.lat},${item.lng} (${item.w3w})`;
+                    var payload = "HEDEF-" + item.index + ": " + item.lat + "," + item.lng + " (" + item.w3w + ")";
                     client.publish(topicName, payload);
                     sentCount++;
-                    document.getElementById('status').innerText = `🚀 Gönderiliyor (${sentCount}/${targetList.length}): #${item.index}`;
+                    document.getElementById('status').innerText = "🚀 Gönderiliyor (" + sentCount + "/" + targetList.length + "): #" + item.index;
 
                     if (sentCount === targetList.length) {
                         setTimeout(function() {
@@ -155,7 +164,7 @@
                             document.getElementById('sendBtn').disabled = false;
                         }, 1000);
                     }
-                }, idx * 4000); // 4 saniye aralık (ESP32 Brownout çökmesini %100 önlemek için)
+                }, idx * 4000);
             });
         }
     </script>

@@ -1,4 +1,3 @@
 # LoRa Oturum Baslangici
 
-* **[Giden]:** HEDEF-1: 41.073594,28.933142 (///adres.bulunamadi) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:41.073594,28.933142(///adres.bulunamadi))  
-* **[Giden]:** HEDEF-2: 41.138816,29.000416 (///adres.bulunamadi) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-2:41.138816,29.000416(///adres.bulunamadi))  
+* **[Giden]:** HEDEF-1: 41.068937,28.893325 (///41.068937.28.893325) | [Haritayı Aç](https://www.google.com/maps/search/?api=1&query=HEDEF-1:41.068937,28.893325(///41.068937.28.893325))  
